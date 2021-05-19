@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.format.DateTimeParseException;
 import java.util.Iterator;
 import java.util.List;
@@ -25,7 +27,10 @@ public class AgendaIO {
 		int cant = 0;
 		BufferedReader f = null;
 		try {
-			f = new BufferedReader(new FileReader(fichero));
+			// f = new BufferedReader(new FileReader(fichero));
+			// String local = f.readLine();
+			InputStream input = AgendaIO.class.getClassLoader().getResourceAsStream(fichero);
+			f = new BufferedReader(new InputStreamReader(input));
 			String local = f.readLine();
 			while (local != null) {
 				try {
@@ -59,7 +64,7 @@ public class AgendaIO {
 	 * @param linea
 	 * @return Contacto
 	 */
-	private static Contacto parsearLinea(String linea) throws IllegalArgumentException, DateTimeParseException{
+	private static Contacto parsearLinea(String linea) throws IllegalArgumentException, DateTimeParseException {
 		String[] formateo = linea.split(",");
 		Contacto c = null;
 		if (formateo[0].trim().equals("1")) {
@@ -71,24 +76,25 @@ public class AgendaIO {
 		}
 		return c;
 	}
-	
-	
+
 	/**
-	 * Crea un fichero externo al programa con todos los tipos de relación que existen entre
-	 * los contactos. Si no se puede crear el fichero o escribir en el, o cerrarlo, lanza una excepción
+	 * Crea un fichero externo al programa con todos los tipos de relación que
+	 * existen entre los contactos. Si no se puede crear el fichero o escribir en
+	 * el, o cerrarlo, lanza una excepción
+	 * 
 	 * @param agenda
 	 * @param fichero
 	 * @throws IOException
 	 */
-	public static void exportarContactos(AgendaContactos agenda, String fichero) throws IOException{
+	public static void exportarContactos(AgendaContactos agenda, String fichero) throws IOException {
 		FileWriter fW = new FileWriter(fichero);
 		fW.write(personalesEnRelacion(agenda));
 		fW.close();
 	}
-	
-	
+
 	/**
 	 * Método privado que escribe los contactos en relación
+	 * 
 	 * @param agenda
 	 * @return Los contactos clasificados en el tipo de relación
 	 */
