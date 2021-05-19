@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
@@ -91,9 +92,21 @@ public class GuiAgenda extends Application {
 	}
 
 	private MenuBar crearBarraMenu() {
-		// a completar
+		
 		MenuBar barra = new MenuBar();
-
+		// Menu 1
+		Menu menuArchivo = new Menu();
+		menuArchivo.setText("Archivo");
+		itemImportar = new MenuItem();
+		itemImportar.setText("Importar agenda");
+		itemExportarPersonales = new MenuItem();
+		itemExportarPersonales.setText("Exportar Personales");
+		itemSalir = new MenuItem();
+		itemSalir.setText("Salir");
+		itemSalir.setOnAction(e -> salir());
+		menuArchivo.getItems().addAll(itemImportar, itemExportarPersonales, itemSalir);
+		
+		barra.getMenus().addAll(menuArchivo);
 		return barra;
 	}
 
