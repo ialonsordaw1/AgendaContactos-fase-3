@@ -4,6 +4,7 @@ import agenda.modelo.AgendaContactos;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
@@ -12,6 +13,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -80,6 +82,29 @@ public class GuiAgenda extends Application {
 	private VBox crearPanelBotones() {
 		VBox panel = new VBox();
 		panel.setPadding(new Insets(10, 10, 10, 10));
+		
+		// Buscar
+		txtBuscar = new TextField();
+		txtBuscar.setPromptText("Buscar");
+		txtBuscar.setMinHeight(40);
+		VBox.setMargin(txtBuscar, new Insets(0, 0, 40, 0));
+		
+		// Botones de radio
+		rbtListarTodo = new RadioButton();
+		rbtListarSoloNumero = new RadioButton();
+		ToggleGroup grupo = new ToggleGroup();
+		grupo.getToggles().addAll(rbtListarTodo, rbtListarSoloNumero);
+		rbtListarTodo.setText("Listar toda la agenda");
+		rbtListarTodo.setSelected(true);
+		rbtListarSoloNumero.setText("Listar nº contactos");
+		
+		// btnListar
+		btnListar = new Button();
+		btnListar.setText("Listar");
+		btnListar.setAlignment(Pos.CENTER);
+		btnListar.setPrefWidth(250);
+		
+		panel.getChildren().addAll(txtBuscar, rbtListarTodo, rbtListarSoloNumero, btnListar);
 		return panel;
 	}
 
