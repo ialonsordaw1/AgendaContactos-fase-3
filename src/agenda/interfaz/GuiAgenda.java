@@ -1,5 +1,9 @@
 package agenda.interfaz;
 
+import java.io.File;
+import java.util.Optional;
+
+import agenda.io.AgendaIO;
 import agenda.modelo.AgendaContactos;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -13,11 +17,14 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class GuiAgenda extends Application {
 	private AgendaContactos agenda;
@@ -118,7 +125,7 @@ public class GuiAgenda extends Application {
 		btnPersonalesOrdenadosPorFecha.setText("Contactos personales\nordenados por fecha");
 		btnPersonalesOrdenadosPorFecha.setAlignment(Pos.CENTER);
 		btnPersonalesOrdenadosPorFecha.setPrefWidth(250);
-		
+
 		// clear
 		btnClear = new Button();
 		btnClear.getStyleClass().add("botones");
@@ -126,14 +133,14 @@ public class GuiAgenda extends Application {
 		btnClear.setAlignment(Pos.CENTER);
 		btnClear.setPrefWidth(250);
 		VBox.setMargin(btnClear, new Insets(40, 0, 0, 0));
-		
+
 		// salir
 		btnSalir = new Button();
 		btnSalir.getStyleClass().add("botones");
 		btnSalir.setText("Salir");
 		btnSalir.setAlignment(Pos.CENTER);
 		btnSalir.setPrefWidth(250);
-		
+
 		panel.getChildren().addAll(txtBuscar, rbtListarTodo, rbtListarSoloNumero, btnListar, btnPersonalesEnLetra,
 				btnPersonalesOrdenadosPorFecha, btnClear, btnSalir);
 		return panel;
@@ -154,9 +161,11 @@ public class GuiAgenda extends Application {
 		menuArchivo.setText("Archivo");
 		itemImportar = new MenuItem();
 		itemImportar.setText("Importar agenda");
+		itemImportar.setOnAction(e -> importarAgenda());
 		itemExportarPersonales = new MenuItem();
 		itemExportarPersonales.setText("Exportar Personales");
 		itemExportarPersonales.setDisable(true);
+		itemExportarPersonales.setOnAction(e -> exportarPersonales());
 		itemSalir = new MenuItem();
 		itemSalir.setText("Salir");
 		itemSalir.setOnAction(e -> salir());
@@ -183,13 +192,21 @@ public class GuiAgenda extends Application {
 	}
 
 	private void importarAgenda() {
-		// a completar
-
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Abrir fichero csv");
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
+		fileChooser.setInitialDirectory(new File("."));
+		AgendaIO IO = new AgendaIO();
+		File csv = fileChooser.showOpenDialog(null);
+		if (csv != null) {
+			areaTexto.setText("Importada agenda\n\nLineas erroneas: " + AgendaIO.importar(agenda, csv.getName()));
+		}
+		itemImportar.setDisable(true);
+		itemExportarPersonales.setDisable(false);
 	}
 
 	private void exportarPersonales() {
-		// a completar
-
+		
 	}
 
 	/**
