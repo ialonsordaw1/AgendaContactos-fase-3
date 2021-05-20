@@ -1,17 +1,25 @@
 package agenda.interfaz;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 import agenda.io.AgendaIO;
 import agenda.modelo.AgendaContactos;
+import agenda.modelo.Contacto;
+import agenda.modelo.Personal;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Menu;
@@ -22,6 +30,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -96,6 +106,14 @@ public class GuiAgenda extends Application {
 		txtBuscar = new TextField();
 		txtBuscar.setPromptText("Buscar");
 		txtBuscar.setMinHeight(40);
+		txtBuscar.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (ke.getCode().equals(KeyCode.ENTER)) {
+					buscar();
+				}
+			}
+		});
 		VBox.setMargin(txtBuscar, new Insets(0, 0, 40, 0));
 
 		// Botones de radio
@@ -106,7 +124,7 @@ public class GuiAgenda extends Application {
 		rbtListarTodo.setText("Listar toda la agenda");
 		rbtListarTodo.setSelected(true);
 		rbtListarSoloNumero.setText("Listar nº contactos");
-		
+
 		// btnListar
 		btnListar = new Button();
 		btnListar.setText("Listar");
@@ -129,6 +147,7 @@ public class GuiAgenda extends Application {
 		btnPersonalesOrdenadosPorFecha.setText("Contactos personales\nordenados por fecha");
 		btnPersonalesOrdenadosPorFecha.setAlignment(Pos.CENTER);
 		btnPersonalesOrdenadosPorFecha.setPrefWidth(250);
+		btnPersonalesOrdenadosPorFecha.setOnAction(e -> personalesOrdenadosPorFecha());
 
 		// clear
 		btnClear = new Button();
@@ -136,6 +155,7 @@ public class GuiAgenda extends Application {
 		btnClear.setText("Clear");
 		btnClear.setAlignment(Pos.CENTER);
 		btnClear.setPrefWidth(250);
+		btnClear.setOnAction(e -> clear());
 		VBox.setMargin(btnClear, new Insets(40, 0, 0, 0));
 
 		// salir
@@ -182,7 +202,9 @@ public class GuiAgenda extends Application {
 		itemBuscar = new MenuItem();
 		itemFelicitar = new MenuItem();
 		itemBuscar.setText("Buscar");
+		itemBuscar.setOnAction(e -> buscar());
 		itemFelicitar.setText("Felicitar");
+		itemFelicitar.setOnAction(e -> felicitar());
 		menuOpciones.getItems().addAll(itemBuscar, itemFelicitar);
 
 		// Menu 3
@@ -212,7 +234,7 @@ public class GuiAgenda extends Application {
 	}
 
 	private void exportarPersonales() {
-		
+
 	}
 
 	/**
@@ -233,7 +255,33 @@ public class GuiAgenda extends Application {
 
 	private void personalesOrdenadosPorFecha() {
 		clear();
-		// a completar
+		if (agenda.totalContactos() != 0) {
+			List<String> opciones = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+			ChoiceDialog<String> dialogo = new ChoiceDialog<>("A", opciones);
+			dialogo.setTitle("Selector de letra");
+			dialogo.setHeaderText(null);
+			dialogo.setContentText("Elije letra");
+			Optional<String> resul = dialogo.showAndWait();
+			if (resul.isPresent()) {
+				String cadena = "";
+				String opcion = resul.get();
+				List<Personal> resultado = agenda.personalesOrdenadosPorFechaNacimiento(opcion.charAt(0));
+				if (resultado.isEmpty()) {
+					cadena = "No hay contactos en la letra " + opcion;
+				} else {
+					cadena = "Contactos en la letra " + opcion + "\n\n";
+					Iterator<Personal> it = resultado.iterator();
+					while (it.hasNext()) {
+						Personal personal = (Personal) it.next();
+						cadena += personal.toString();
+					}
+				}
+				areaTexto.setText(cadena);
+			}
+
+		} else {
+			areaTexto.setText("Importa antes la agenda");
+		}
 
 	}
 
@@ -250,14 +298,46 @@ public class GuiAgenda extends Application {
 
 	private void felicitar() {
 		clear();
-		// a completar
-
+		if (agenda.totalContactos() != 0) {
+			String cadena = "";
+			cadena = "Hoy es " + LocalDate.now() + "\n\n";
+			List<Personal> resultado = agenda.felicitar();
+			if (resultado.isEmpty()) {
+				cadena += "Hoy no cumple nadie";
+			} else {
+				cadena += "Hoy hay que felicitar a ";
+				Iterator<Personal> it = resultado.iterator();
+				while (it.hasNext()) {
+					Personal personal = (Personal) it.next();
+					cadena += personal.toString();
+				}
+			}
+			areaTexto.setText(cadena);
+		} else {
+			areaTexto.setText("Importa antes la agenda");
+		}
 	}
 
 	private void buscar() {
 		clear();
-		// a completar
-
+		if (agenda.totalContactos() != 0) {
+			String cadena = "";
+			List<Contacto> resultado = agenda.buscarContactos(txtBuscar.getText());
+			;
+			if (resultado.isEmpty()) {
+				cadena = "No hay contactos que contengan " + txtBuscar.getText();
+			} else {
+				cadena = "Contactos en la agenda que contienen " + txtBuscar.getText() + "\n\n";
+				Iterator<Contacto> it = resultado.iterator();
+				while (it.hasNext()) {
+					Contacto temp = (Contacto) it.next();
+					cadena += temp.toString();
+				}
+			}
+			areaTexto.setText(cadena);
+		} else {
+			areaTexto.setText("Importa antes la agenda");
+		}
 		cogerFoco();
 
 	}
@@ -269,7 +349,7 @@ public class GuiAgenda extends Application {
 		alert.setHeaderText(null);
 		alert.setTitle("About Agenda de Contactos");
 		alert.setContentText("Mi agenda de\ncontactos");
-		alert.showAndWait(); 
+		alert.showAndWait();
 	}
 
 	private void clear() {
