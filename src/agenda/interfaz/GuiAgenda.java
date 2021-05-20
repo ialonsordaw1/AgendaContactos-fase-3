@@ -80,8 +80,8 @@ public class GuiAgenda extends Application {
 	}
 
 	private VBox crearPanelBotones() {
-		VBox panel = new VBox();
-		panel.setPadding(new Insets(10, 10, 10, 10));
+		VBox panel = new VBox(10);
+		panel.setPadding(new Insets(10));
 		
 		// Buscar
 		txtBuscar = new TextField();
@@ -103,6 +103,10 @@ public class GuiAgenda extends Application {
 		btnListar.setText("Listar");
 		btnListar.setAlignment(Pos.CENTER);
 		btnListar.setPrefWidth(250);
+		btnListar.getStyleClass().add("botones");
+		VBox.setMargin(btnListar, new Insets(0, 0, 40, 0));
+		
+		// btnPersonalesEnLetra
 		
 		panel.getChildren().addAll(txtBuscar, rbtListarTodo, rbtListarSoloNumero, btnListar);
 		return panel;
