@@ -10,7 +10,10 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -103,13 +106,14 @@ public class GuiAgenda extends Application {
 		rbtListarTodo.setText("Listar toda la agenda");
 		rbtListarTodo.setSelected(true);
 		rbtListarSoloNumero.setText("Listar nº contactos");
-
+		
 		// btnListar
 		btnListar = new Button();
 		btnListar.setText("Listar");
 		btnListar.setAlignment(Pos.CENTER);
 		btnListar.setPrefWidth(250);
 		btnListar.getStyleClass().add("botones");
+		btnListar.setOnAction(e -> listar());
 		VBox.setMargin(btnListar, new Insets(0, 0, 40, 0));
 
 		// btnPersonalesEnLetra
@@ -140,6 +144,7 @@ public class GuiAgenda extends Application {
 		btnSalir.setText("Salir");
 		btnSalir.setAlignment(Pos.CENTER);
 		btnSalir.setPrefWidth(250);
+		btnSalir.setOnAction(e -> salir());
 
 		panel.getChildren().addAll(txtBuscar, rbtListarTodo, rbtListarSoloNumero, btnListar, btnPersonalesEnLetra,
 				btnPersonalesOrdenadosPorFecha, btnClear, btnSalir);
@@ -185,6 +190,7 @@ public class GuiAgenda extends Application {
 		menuHelp.setText("Help");
 		itemAbout = new MenuItem();
 		itemAbout.setText("About");
+		itemAbout.setOnAction(e -> about());
 		menuHelp.getItems().addAll(itemAbout);
 
 		barra.getMenus().addAll(menuArchivo, menuOpciones, menuHelp);
@@ -214,8 +220,15 @@ public class GuiAgenda extends Application {
 	 */
 	private void listar() {
 		clear();
-		// a completar
-
+		if (agenda.totalContactos() != 0) {
+			if (rbtListarTodo.isSelected() == true) {
+				areaTexto.setText(agenda.toString());
+			} else {
+				areaTexto.setText("Total contactos en la agenda: " + agenda.totalContactos());
+			}
+		} else {
+			areaTexto.setText("Importa antes la agenda");
+		}
 	}
 
 	private void personalesOrdenadosPorFecha() {
@@ -250,8 +263,13 @@ public class GuiAgenda extends Application {
 	}
 
 	private void about() {
-		// a completar
-
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		DialogPane dialogPane = alert.getDialogPane();
+		dialogPane.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
+		alert.setHeaderText(null);
+		alert.setTitle("About Agenda de Contactos");
+		alert.setContentText("Mi agenda de\ncontactos");
+		alert.showAndWait(); 
 	}
 
 	private void clear() {
