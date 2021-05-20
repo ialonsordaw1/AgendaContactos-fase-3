@@ -78,9 +78,8 @@ public class GuiAgenda extends Application {
 	}
 
 	private VBox crearPanelBotones() {
-		// a completar
 		VBox panel = new VBox();
-
+		panel.setPadding(new Insets(10, 10, 10, 10));
 		return panel;
 	}
 
@@ -101,12 +100,29 @@ public class GuiAgenda extends Application {
 		itemImportar.setText("Importar agenda");
 		itemExportarPersonales = new MenuItem();
 		itemExportarPersonales.setText("Exportar Personales");
+		itemExportarPersonales.setDisable(true);
 		itemSalir = new MenuItem();
 		itemSalir.setText("Salir");
 		itemSalir.setOnAction(e -> salir());
 		menuArchivo.getItems().addAll(itemImportar, itemExportarPersonales, itemSalir);
 		
-		barra.getMenus().addAll(menuArchivo);
+		// Menu 2
+		Menu menuOpciones = new Menu();
+		menuOpciones.setText("Opciones");
+		itemBuscar = new MenuItem();
+		itemFelicitar = new MenuItem();
+		itemBuscar.setText("Buscar");
+		itemFelicitar.setText("Felicitar");
+		menuOpciones.getItems().addAll(itemBuscar, itemFelicitar);
+		
+		// Menu 3
+		Menu menuHelp = new Menu();
+		menuHelp.setText("Help");
+		itemAbout = new MenuItem();
+		itemAbout.setText("About");
+		menuHelp.getItems().addAll(itemAbout);
+		
+		barra.getMenus().addAll(menuArchivo, menuOpciones, menuHelp);
 		return barra;
 	}
 
