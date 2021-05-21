@@ -1,6 +1,7 @@
 package agenda.interfaz;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -40,6 +41,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -269,8 +271,23 @@ public class GuiAgenda extends Application {
 		itemExportarPersonales.setDisable(false);
 	}
 
+	@SuppressWarnings("static-access")
 	private void exportarPersonales() {
-
+		FileChooser f = new FileChooser();
+		Stage s = new Stage();
+		f.setTitle("Exportados datos personales");
+		f.setInitialDirectory(new File("."));
+		f.getExtensionFilters().addAll(new ExtensionFilter("txt","*.txt"));
+		File file = f.showSaveDialog(s);
+		if(f != null) {
+			AgendaIO io = new AgendaIO();
+			try {
+				io.exportarContactos(agenda, file.getPath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
