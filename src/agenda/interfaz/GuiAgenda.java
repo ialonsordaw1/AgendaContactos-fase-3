@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import agenda.io.AgendaIO;
 import agenda.modelo.AgendaContactos;
@@ -34,6 +35,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -171,13 +173,14 @@ public class GuiAgenda extends Application {
 		return panel;
 	}
 
+	@SuppressWarnings("static-access")
 	private GridPane crearPanelLetras() {
 		// a completar
 		GridPane panel = new GridPane();
 		panel.setPadding(new Insets(10));
+		panel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		panel.setVgap(5);
 		panel.setHgap(5);
-		panel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		String[] letras = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 		Button[] btn = new Button[27];
 		for (int i = 0; i < letras.length; i++) {
@@ -185,11 +188,15 @@ public class GuiAgenda extends Application {
 			btn[i].setText(letras[i]);
 			btn[i].setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			btn[i].getStyleClass().add("botonletra");
+			final int valor = i;
+			btn[i].setOnAction(e -> contactosEnLetra(btn[valor].getText().charAt(0)));
 			if(i < 14) {
 				panel.add(btn[i], i, 0);
+				panel.setHgrow(btn[i], Priority.ALWAYS);
 			}
 			else {
 				panel.add(btn[i], i-14, 1);
+				panel.setHgrow(btn[i], Priority.ALWAYS);
 			}
 		}
 		return panel;
@@ -311,6 +318,23 @@ public class GuiAgenda extends Application {
 	private void contactosEnLetra(char letra) {
 		clear();
 		// a completar
+		if (agenda.totalContactos() != 0) {
+			Set<Contacto> listado = agenda.contactosEnLetra(letra);
+			String linea = "";
+			if (listado.size() == 0) {
+				linea = "No hay nadie por esa letra";
+			}
+			else {
+				Iterator<Contacto> it = listado.iterator();
+				while (it.hasNext()) {
+					Contacto contacto = (Contacto) it.next();
+					linea += contacto.toString();
+				}
+			}
+			areaTexto.setText(linea);
+		} else {
+			areaTexto.setText("Importa antes la agenda");
+		}
 	}
 
 	private void felicitar() {
