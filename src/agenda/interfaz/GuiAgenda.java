@@ -83,14 +83,23 @@ public class GuiAgenda extends Application {
 		stage.show();
 
 	}
-
+	/**
+	 * Crea el panel que compone la escena y inserta arriba el menu
+	 * y en el centro el panel principal
+	 * 
+	 * @return panel
+	 */
 	private BorderPane crearGui() {
 		BorderPane panel = new BorderPane();
 		panel.setTop(crearBarraMenu());
 		panel.setCenter(crearPanelPrincipal());
 		return panel;
 	}
-
+	/**
+	 * Crea el panel principal, que contiene una caja vertical para los botones de
+	 * la izquierda, en el centro el area de texto y arriba los botones con letras 
+	 * @return panel
+	 */
 	private BorderPane crearPanelPrincipal() {
 		BorderPane panel = new BorderPane();
 		panel.setPadding(new Insets(10));
@@ -103,7 +112,10 @@ public class GuiAgenda extends Application {
 		panel.setLeft(crearPanelBotones());
 		return panel;
 	}
-
+	/**
+	 * crea los botones de la parte izquierda del boton principal
+	 * @return panel
+	 */
 	private VBox crearPanelBotones() {
 		VBox panel = new VBox(10);
 		panel.setPadding(new Insets(10));
@@ -211,7 +223,10 @@ public class GuiAgenda extends Application {
 		}
 		return panel;
 	}
-
+	/**
+	 * Crea la barra del menu
+	 * @return barra
+	 */
 	private MenuBar crearBarraMenu() {
 
 		MenuBar barra = new MenuBar();
@@ -261,7 +276,9 @@ public class GuiAgenda extends Application {
 		barra.getMenus().addAll(menuArchivo, menuOpciones, menuHelp);
 		return barra;
 	}
-
+	/**
+	 * Metodo para importar la agenda de contactos
+	 */
 	private void importarAgenda() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Abrir fichero csv");
@@ -300,7 +317,7 @@ public class GuiAgenda extends Application {
 	}
 
 	/**
-	 *  
+	 *  lista todos los contactos de la agenda
 	 */
 	private void listar() {
 		clear();
@@ -314,7 +331,10 @@ public class GuiAgenda extends Application {
 			areaTexto.setText("Importa antes la agenda");
 		}
 	}
-
+	/**
+	 * Metodo que obtiene los contactos personales de una letra y los lista ordenados
+	 * por fecha
+	 */
 	private void personalesOrdenadosPorFecha() {
 		clear();
 		if (agenda.totalContactos() != 0) {
@@ -412,7 +432,9 @@ public class GuiAgenda extends Application {
 			areaTexto.setText("Importa antes la agenda");
 		}
 	}
-
+	/**
+	 * Metodo que lista los contactos personales que cumplen años en el dia de hoy
+	 */
 	private void felicitar() {
 		clear();
 		if (agenda.totalContactos() != 0) {
@@ -434,7 +456,9 @@ public class GuiAgenda extends Application {
 			areaTexto.setText("Importa antes la agenda");
 		}
 	}
-
+	/**
+	 * Metodo que busca los contactos personales que contienen una determinada cadena
+	 */
 	private void buscar() {
 		clear();
 		if (agenda.totalContactos() != 0) {
@@ -458,7 +482,9 @@ public class GuiAgenda extends Application {
 		cogerFoco();
 
 	}
-
+	/**
+	 * Metodo que nos da informacion sobre la aplicacion
+	 */
 	private void about() {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		DialogPane dialogPane = alert.getDialogPane();
