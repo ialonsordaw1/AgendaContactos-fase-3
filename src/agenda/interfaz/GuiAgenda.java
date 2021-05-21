@@ -32,6 +32,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -207,36 +209,45 @@ public class GuiAgenda extends Application {
 		MenuBar barra = new MenuBar();
 		// Menu 1
 		Menu menuArchivo = new Menu();
-		menuArchivo.setText("Archivo");
+		menuArchivo.setText("_Archivo");
+		menuArchivo.setMnemonicParsing(true);
 		itemImportar = new MenuItem();
 		itemImportar.setText("Importar agenda");
 		itemImportar.setOnAction(e -> importarAgenda());
+		itemImportar.setAccelerator(new KeyCodeCombination(KeyCode.I, KeyCombination.CONTROL_DOWN));
 		itemExportarPersonales = new MenuItem();
 		itemExportarPersonales.setText("Exportar Personales");
 		itemExportarPersonales.setDisable(true);
 		itemExportarPersonales.setOnAction(e -> exportarPersonales());
+		itemExportarPersonales.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN));
 		itemSalir = new MenuItem();
 		itemSalir.setText("Salir");
 		itemSalir.setOnAction(e -> salir());
+		itemSalir.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
 		menuArchivo.getItems().addAll(itemImportar, itemExportarPersonales, itemSalir);
 
 		// Menu 2
 		Menu menuOpciones = new Menu();
-		menuOpciones.setText("Opciones");
+		menuOpciones.setText("_Opciones");
+		menuOpciones.setMnemonicParsing(true);
 		itemBuscar = new MenuItem();
 		itemFelicitar = new MenuItem();
 		itemBuscar.setText("Buscar");
 		itemBuscar.setOnAction(e -> buscar());
+		itemBuscar.setAccelerator(new KeyCodeCombination(KeyCode.B, KeyCombination.CONTROL_DOWN));
 		itemFelicitar.setText("Felicitar");
+		itemFelicitar.setAccelerator(new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN));
 		itemFelicitar.setOnAction(e -> felicitar());
 		menuOpciones.getItems().addAll(itemBuscar, itemFelicitar);
 
 		// Menu 3
 		Menu menuHelp = new Menu();
-		menuHelp.setText("Help");
+		menuHelp.setText("_Help");
+		menuHelp.setMnemonicParsing(true);
 		itemAbout = new MenuItem();
 		itemAbout.setText("About");
 		itemAbout.setOnAction(e -> about());
+		itemAbout.setAccelerator(new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN));
 		menuHelp.getItems().addAll(itemAbout);
 
 		barra.getMenus().addAll(menuArchivo, menuOpciones, menuHelp);
