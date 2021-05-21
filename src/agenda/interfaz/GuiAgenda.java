@@ -142,6 +142,7 @@ public class GuiAgenda extends Application {
 		btnPersonalesEnLetra = new Button();
 		btnPersonalesEnLetra.getStyleClass().add("botones");
 		btnPersonalesEnLetra.setText("Contactos personales en letra");
+		btnPersonalesEnLetra.setOnAction(e -> contactosPersonalesEnLetra());
 		btnPersonalesEnLetra.setAlignment(Pos.CENTER);
 		btnPersonalesEnLetra.setPrefWidth(250);
 
@@ -322,7 +323,33 @@ public class GuiAgenda extends Application {
 
 	private void contactosPersonalesEnLetra() {
 		clear();
-		// a completar
+		if (agenda.totalContactos() != 0) {
+			List<String> opciones = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+			ChoiceDialog<String> dialogo = new ChoiceDialog<>("A", opciones);
+			dialogo.setTitle("Selector de letra");
+			dialogo.setHeaderText(null);
+			dialogo.setContentText("Elije letra");
+			Optional<String> resul = dialogo.showAndWait();
+			if (resul.isPresent()) {
+				String linea = "";
+				String opcion = resul.get();
+				List<Personal> listado = agenda.personalesEnLetra(opcion.charAt(0));
+				if (listado.isEmpty()) {
+					linea = "No hay contactos en la letra " + opcion;
+				} else {
+					linea = "Contactos en la letra " + opcion + "\n\n";
+					Iterator<Personal> it = listado.iterator();
+					while (it.hasNext()) {
+						Personal personal = (Personal) it.next();
+						linea += personal.toString();
+					}
+				}
+				areaTexto.setText(linea);
+			}
+
+		} else {
+			areaTexto.setText("Importa antes la agenda");
+		}
 
 	}
 
