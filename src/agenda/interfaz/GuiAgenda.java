@@ -321,17 +321,17 @@ public class GuiAgenda extends Application {
 		if (agenda.totalContactos() != 0) {
 			Set<Contacto> listado = agenda.contactosEnLetra(letra);
 			String linea = "";
-			if (listado.size() == 0) {
+			try {
+					Iterator<Contacto> it = listado.iterator();
+					while (it.hasNext()) {
+						Contacto contacto = (Contacto) it.next();
+						linea += contacto.toString();
+					}
+			}catch(NullPointerException n) {
 				linea = "No hay nadie por esa letra";
 			}
-			else {
-				Iterator<Contacto> it = listado.iterator();
-				while (it.hasNext()) {
-					Contacto contacto = (Contacto) it.next();
-					linea += contacto.toString();
-				}
-			}
 			areaTexto.setText(linea);
+			
 		} else {
 			areaTexto.setText("Importa antes la agenda");
 		}
