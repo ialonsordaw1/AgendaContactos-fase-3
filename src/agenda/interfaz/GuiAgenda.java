@@ -177,10 +177,14 @@ public class GuiAgenda extends Application {
 				btnPersonalesOrdenadosPorFecha, btnClear, btnSalir);
 		return panel;
 	}
-
+	
+	/**
+	 * Crea el panel de botones alfabéticos y lo devuelve
+	 * @return el panel 
+	 */
 	@SuppressWarnings("static-access")
 	private GridPane crearPanelLetras() {
-		// a completar
+		// Crea el panel con sus atributos de definición
 		GridPane panel = new GridPane();
 		panel.setPadding(new Insets(10));
 		panel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -188,6 +192,7 @@ public class GuiAgenda extends Application {
 		panel.setHgap(5);
 		String[] letras = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 		Button[] btn = new Button[27];
+		//Bucle que crea los botones
 		for (int i = 0; i < letras.length; i++) {
 			btn[i] = new Button(letras[i]);
 			btn[i].setText(letras[i]);
@@ -271,6 +276,10 @@ public class GuiAgenda extends Application {
 		itemExportarPersonales.setDisable(false);
 	}
 
+	/**
+	 * Crea una ventana que especifica el tipo de archivo a guardar (un txt)
+	 * y llama al método exportarContactos() de la clase AgendaIO para guardar
+	 */
 	@SuppressWarnings("static-access")
 	private void exportarPersonales() {
 		FileChooser f = new FileChooser();
@@ -338,6 +347,12 @@ public class GuiAgenda extends Application {
 
 	}
 
+	/**
+	 * Crea una ventana de selección con cada letra, dandole atributos,
+	 * y esta se encarga de comprobar si se ha importado el fichero. Si no,
+	 * avisa al usuario de que debe importar, y si ya lo está, comprueba que 
+	 * este vacío (comunica que está vacío) o no (Lista los personales que empiecen por esa letra alfabéticamente) 
+	 */
 	private void contactosPersonalesEnLetra() {
 		clear();
 		if (agenda.totalContactos() != 0) {
@@ -370,9 +385,15 @@ public class GuiAgenda extends Application {
 
 	}
 
+	/**
+	 * Comprubea primero si está importado el fichero, si no lo está avisa de que se
+	 * debe importar, y si lo está, busca contactos que empiecen por esa letra.
+	 * Si no hay nadie por esa letra, saca un mensaje avisando de que está vacío,
+	 * y sino, los lista alfabéticamente
+	 * @param letra inicial de los contactos a buscar
+	 */
 	private void contactosEnLetra(char letra) {
 		clear();
-		// a completar
 		if (agenda.totalContactos() != 0) {
 			Set<Contacto> listado = agenda.contactosEnLetra(letra);
 			String linea = "";
