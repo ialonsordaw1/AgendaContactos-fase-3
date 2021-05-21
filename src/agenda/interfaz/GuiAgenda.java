@@ -174,7 +174,24 @@ public class GuiAgenda extends Application {
 	private GridPane crearPanelLetras() {
 		// a completar
 		GridPane panel = new GridPane();
-
+		panel.setPadding(new Insets(10));
+		panel.setVgap(5);
+		panel.setHgap(5);
+		panel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		String[] letras = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+		Button[] btn = new Button[27];
+		for (int i = 0; i < letras.length; i++) {
+			btn[i] = new Button(letras[i]);
+			btn[i].setText(letras[i]);
+			btn[i].setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+			btn[i].getStyleClass().add("botonletra");
+			if(i < 14) {
+				panel.add(btn[i], i, 0);
+			}
+			else {
+				panel.add(btn[i], i-14, 1);
+			}
+		}
 		return panel;
 	}
 
